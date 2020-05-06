@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.4" />
+    <PackageReference Include="NHibernate" Version="5.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Commerce.Core">
+      <HintPath>..\..\..\Core\Commerce.Core\bin\Debug\netcoreapp2.2\Commerce.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Commerce.BusinessImplementation\Commerce.BusinessImplementation\Commerce.BusinessImplementation.csproj" />
+    <ProjectReference Include="..\..\Commerce.Business\Commerce.Business\Commerce.Business.csproj" />
+    <ProjectReference Include="..\..\Commerce.NhMapping\Commerce.NhMapping.csproj" />
+  </ItemGroup>
+
+</Project>

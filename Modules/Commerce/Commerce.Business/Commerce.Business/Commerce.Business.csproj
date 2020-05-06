@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Commerce.ViewModel\Commerce.ViewModel\Commerce.ViewModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Commerce.Core">
+      <HintPath>..\..\..\Core\Commerce.Core\bin\Debug\netcoreapp2.2\Commerce.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

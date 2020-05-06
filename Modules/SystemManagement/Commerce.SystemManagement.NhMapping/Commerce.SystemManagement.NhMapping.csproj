@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Commerce.SystemManagement.EntityModel\Commerce.SystemManagement.EntityModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="NHibernate">
+      <HintPath>..\..\..\Shared Items\NHibernate\NHibernate.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

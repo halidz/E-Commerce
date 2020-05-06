@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="WooCommerceNET" Version="0.8.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Commerce.Business\Commerce.Business\Commerce.Business.csproj" />
+    <ProjectReference Include="..\..\Commerce.EntityModel\Commerce.EntityModel\Commerce.EntityModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Commerce.Core">
+      <HintPath>..\..\..\Core\Commerce.Core\bin\Debug\netcoreapp2.2\Commerce.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
