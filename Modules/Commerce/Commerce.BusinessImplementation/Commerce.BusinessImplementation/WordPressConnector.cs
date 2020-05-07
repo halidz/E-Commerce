@@ -34,11 +34,11 @@ namespace Commerce.BusinessImplementation
             if (list.Count == 0)
             {
                 var orderInstance = orders.Result[0];
-                _repository.Save<Commerce.EntityModel.Order>(new Commerce.EntityModel.Order { RefId = Convert.ToInt64(orderInstance.id), CreatedDate = DateTime.Now.ToDateTime(), IsLast = true });
+                _repository.Save<Commerce.EntityModel.Order>(new Commerce.EntityModel.Order { RefId = Convert.ToInt64(orderInstance.id), CreatedDate = DateTime.Now.ToDateTime(), IsLast = true, Status = Status.Active });
                 for (int i = 1; i < count; i++)
                 {
-                    orderInstance = orders.Result[i];
-                    _repository.Save<Commerce.EntityModel.Order>(new Commerce.EntityModel.Order { RefId = Convert.ToInt64(orderInstance.id), CreatedDate = DateTime.Now.ToDateTime(), IsLast = false });
+                    orderInstance = orders.Result[i];                  
+                    _repository.Save<Commerce.EntityModel.Order>(new Commerce.EntityModel.Order { RefId = Convert.ToInt64(orderInstance.id), CreatedDate = DateTime.Now.ToDateTime(), IsLast = false, Status = Status.Active });
                 }
                 counter = count;
             }
@@ -54,7 +54,6 @@ namespace Commerce.BusinessImplementation
                 //int vs long
                 if (idOfLastOrder == lastOrder.RefId)
                 {
-
 
                 }
                 else
@@ -73,23 +72,19 @@ namespace Commerce.BusinessImplementation
                         counter = counter + 1;
                         orderInstance = orders.Result[i];
 
-                        _repository.Save<Commerce.EntityModel.Order>(new Commerce.EntityModel.Order { RefId = Convert.ToInt64(orderInstance.id), CreatedDate = DateTime.Now.ToDateTime(), IsLast = false });
+                        _repository.Save<Commerce.EntityModel.Order>(new Commerce.EntityModel.Order { RefId = Convert.ToInt64(orderInstance.id), CreatedDate = DateTime.Now.ToDateTime(), IsLast = false ,Status=Status.Active});
                     }
                     orderInstance = orders.Result[0];
                     counter = counter + 1;
-                    _repository.Save<Commerce.EntityModel.Order>(new Commerce.EntityModel.Order { RefId = Convert.ToInt64(orderInstance.id), CreatedDate = DateTime.Now.ToDateTime(), IsLast = true });
+                    _repository.Save<Commerce.EntityModel.Order>(new Commerce.EntityModel.Order { RefId = Convert.ToInt64(orderInstance.id), CreatedDate = DateTime.Now.ToDateTime(), IsLast = true, Status = Status.Active });
 
                     lastOrder.IsLast = false;
                     _repository.Save<Commerce.EntityModel.Order>(lastOrder);
 
-                    orderInstance.cu
+                    //orderInstance =cu
                 }
-
-
             }
-
             return counter;
-
         }
 
         public PaginatedList<ProductView> ListProduct()
@@ -97,11 +92,11 @@ namespace Commerce.BusinessImplementation
             RestAPI rest = new RestAPI("https://www.ne-ararsan.com/wp-json/wc/v2/", "ck_6c2e256b3a1fc9857e78d095dadc6dcd47d7df57", "cs_d83dea91af83a7a92fc014300d9472475ef78fe6");
             WCObject wc = new WCObject(rest);
 
-            var orders = wc.Product.GetAll();
-            orders.Wait();
+            var products = wc.Product.GetAll();
+            products.Wait();
 
             
-            var newQuery = orders.Result.Select(x => new ProductView
+            var newQuery = products.Result.Select(x => new ProductView
             {
                 Name = x.name,
                 Image = x.images.FirstOrDefault().src,
@@ -128,31 +123,33 @@ namespace Commerce.BusinessImplementation
             var list = query.ToList();
             if (list.Count == 0)
             {
-                var orderInstance = products.Result[0];
+                var productInstance = products.Result[0];
                 _repository.Save<EntityModel.Product>(new EntityModel.Product
                 {
-                    Name=orderInstance.name,
-                    RefId=orderInstance.id,
-                    Image = orderInstance.images.FirstOrDefault().src,
-                    Price = orderInstance.regular_price,
-                    Description = orderInstance.description,
+                    Name= productInstance.name,
+                    RefId= productInstance.id,
+                    Image = productInstance.images.FirstOrDefault().src,
+                    Price = productInstance.regular_price,
+                    Description = productInstance.description,
                     IsLast = true,
                     CreatedDate = DateTime.Now.ToDateTime(),
+                    Status = Status.Active
                 });
 
                 for (int i = 1; i < count; i++)
                 {
-                    orderInstance = products.Result[i];
+                    productInstance = products.Result[i];
                     _repository.Save<EntityModel.Product>(new EntityModel.Product
                     {
 
-                        Name = orderInstance.name,
-                        RefId = orderInstance.id,
-                        Image = orderInstance.images.FirstOrDefault().src,
-                        Price = orderInstance.regular_price,
-                        Description = orderInstance.description,
+                        Name = productInstance.name,
+                        RefId = productInstance.id,
+                        Image = productInstance.images.FirstOrDefault().src,
+                        Price = productInstance.regular_price,
+                        Description = productInstance.description,
                         IsLast = false,
                         CreatedDate = DateTime.Now.ToDateTime(),
+                        Status=Status.Active
 
                     });
                 }
@@ -181,36 +178,38 @@ namespace Commerce.BusinessImplementation
                         throw new Exception("Cant find results in db");
                     }
 
-                    var orderInstance = products.Result[0];
+                    var productInstance = products.Result[0];
 
                     for (int i = index - 1; i >= 1; i--)
                     {
-                        orderInstance = products.Result[i];
+                        productInstance = products.Result[i];
 
                         _repository.Save<Commerce.EntityModel.Product>(new Commerce.EntityModel.Product
                         {
 
-                            Name = orderInstance.name,
-                            RefId = orderInstance.id,
-                            Image = orderInstance.images.FirstOrDefault().src,
-                            Price = orderInstance.regular_price,
-                            Description = orderInstance.description,
+                            Name = productInstance.name,
+                            RefId = productInstance.id,
+                            Image = productInstance.images.FirstOrDefault().src,
+                            Price = productInstance.regular_price,
+                            Description = productInstance.description,
                             CreatedDate = DateTime.Now.ToDateTime(),
-                            IsLast = false
+                            IsLast = false,
+                            Status = Status.Active
                         });
                     }
-                    orderInstance = products.Result[0];
+                    productInstance = products.Result[0];
 
                     _repository.Save<Commerce.EntityModel.Product>(new Commerce.EntityModel.Product
                     {
 
-                        Name = orderInstance.name,
-                        RefId = orderInstance.id,
-                        Image = orderInstance.images.FirstOrDefault().src,
-                        Price = orderInstance.regular_price,
-                        Description = orderInstance.description,
+                        Name = productInstance.name,
+                        RefId = productInstance.id,
+                        Image = productInstance.images.FirstOrDefault().src,
+                        Price = productInstance.regular_price,
+                        Description = productInstance.description,
                         CreatedDate = DateTime.Now.ToDateTime(),
-                        IsLast = true
+                        IsLast = true,
+                        Status = Status.Active
                     });
 
                     lastOrder.IsLast = false;

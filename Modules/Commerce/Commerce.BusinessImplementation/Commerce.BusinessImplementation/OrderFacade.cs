@@ -90,8 +90,11 @@ namespace Commerce.BusinessImplementation
             {
                 query = query.Where(x => x.ProductId == filter.ProductId);
             }
-
-
+            if (filter.OrderStatus >= 0)
+            {
+                query = query.Where(x => x.OrderStatus == filter.OrderStatus);
+            }
+                
             query = query.Where(x => x.Status == Status.Active);
 
 
@@ -104,6 +107,11 @@ namespace Commerce.BusinessImplementation
                 ProductId = x.ProductId,
                 Status = x.Status,
                 Description=x.Description,
+                Discount=x.Discount,
+                Total=x.Total,
+                SetPaid=x.SetPaid,
+                PaymentMethod=x.PaymentMethod,
+                Currency=x.Currency
                 
             });
 

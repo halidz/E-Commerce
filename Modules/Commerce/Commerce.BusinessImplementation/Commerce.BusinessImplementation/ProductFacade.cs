@@ -85,18 +85,23 @@ namespace Commerce.BusinessImplementation
             {
                 query = query.Where(x => x.Id == filter.Id);
             }
-      
+            if (!String.IsNullOrEmpty(filter.Name))
+            {
+                query = query.Where(x => x.Name.Contains(filter.Name));
+            }
 
             query = query.Where(x => x.Status == Status.Active);
-
-
 
             var newQuery = query.Select(x => new ProductView
             {
                 Id = x.Id,
                 Name=x.Name,
                 Status = x.Status,
-                Price=x.Price
+                Price=x.Price,
+                RefId=x.RefId,
+                Image=x.Image,
+                Description=x.Description,
+                Type=x.Type
 
             });
 

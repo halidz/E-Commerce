@@ -8,6 +8,8 @@ namespace Commerce.ViewModel
     public class ProductView
     {
         public long Id { get; set; }
+
+        public long CategoryId { get; set; }
         public int? RefId { get; set; }
         public string Name { get; set; }
         public string Image { get; set; }

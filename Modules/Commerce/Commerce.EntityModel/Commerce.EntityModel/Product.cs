@@ -9,11 +9,11 @@ namespace Commerce.EntityModel
     {
         public virtual long Id { get; set; }
 
+        public virtual long CategoryId { get; set; }
         public virtual int? RefId { get; set; }
         public virtual string Name { get; set; }
         public virtual string Image { get; set; }
         public virtual Status Status { get; set; }
-
         public virtual decimal? Price { get; set; }
         public virtual bool IsLast { get; set; }
         public virtual string Type { get; set; }

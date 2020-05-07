@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Commerce.Core;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,6 +11,7 @@ namespace Commerce.ViewModel
 
         public long CompanyId { get; set; }
 
+        public OrderStatus OrderStatus { get; set; }
         public long ProductId { get; set; }
     }
 }

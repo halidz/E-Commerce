@@ -20,10 +20,13 @@ namespace Commerce.NhMapping
 
             Property(x => x.RefId, map => map.Column("REFID"));
             Property(x => x.Name, map => map.Column("NAME"));
+            Property(x => x.Image, map => map.Column("IMAGE"));          
             Property(x => x.Status, map => map.Column("STATUS"));
             Property(x => x.Price, map => map.Column("PRICE"));
             Property(x => x.Type, map => map.Column("TYPE"));
             Property(x => x.IsLast, map => map.Column("ISLAST"));
+            Property(x => x.ShortDescription, map => map.Column("SHRTDESCRIPTION"));
+            Property(x => x.Description, map => map.Column("DESCRIPTION"));
             Property(x => x.CreatedBy, map => map.Column("CREATEDBY"));
             Property(x => x.CreatedByFullName, map => map.Column("CREATEDBYFULLNAME"));
             Property(x => x.CreatedDate, map => map.Column("CREATEDDATE"));

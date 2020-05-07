@@ -21,9 +21,9 @@ namespace Commerce.ServiceApi.Controllers
         }
 
 
-        [HttpPost("Invoke")]
+        [HttpPost("InvokeOrder")]
 
-        public InvokeResponse Invoke(InvokeRequest request)
+        public InvokeResponse InvokeOrder(InvokeRequest request)
         {
 
             var response = new InvokeResponse();
