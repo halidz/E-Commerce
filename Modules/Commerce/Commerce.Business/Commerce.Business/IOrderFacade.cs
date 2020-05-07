@@ -12,6 +12,7 @@ namespace Commerce.Business
 
         OrderView Get(long id);
 
+        OrderViewDetailed GetDetailed(long id);
         PaginatedList<OrderView> Search(OrderSearchFilter filter, PaginationInfoView paginationInfo);
 
         void Delete(long id);

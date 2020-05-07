@@ -73,7 +73,66 @@ namespace Commerce.BusinessImplementation
                 return null;
             }
         }
+        public OrderViewDetailed GetDetailed(long id)
+        {
+            var order = _repository.Get<Order>(id);
+          
+            if (order != null)
+            {
+                var billing = _repository.Get<Billing>(order.BillingId);
+                var shipping = _repository.Get<Billing>(order.ShippingId);
+                return new OrderViewDetailed
+                {
+                    Id = order.Id,
+                    RefId = order.RefId,
+                    CompanyId = order.CompanyId,
+                    ProductId = order.ProductId,
+                    Status = order.Status,
+                    Description = order.Description,
+                    Discount = order.Discount,
+                    Total = order.Total,
+                    SetPaid = order.SetPaid,
+                    PaymentMethod = order.PaymentMethod,
+                    Currency = order.Currency,
+                    OrderStatus=order.OrderStatus,
+                    Billing= new BillingView
+                    {
+                        First_name=billing.First_name,
+                        Last_name=billing.Last_name,
+                        Address_1=billing.Address_1,
+                        Address_2=billing.Address_2,
+                        City=billing.City,
+                        Country=billing.Country,
+                        Company=billing.Company,
+                        Email=billing.Email,
+                        Phone=billing.Phone,
+                        Postcode=billing.Postcode,
+                        State=billing.State,
+                        Id=billing.Id
+                    },
+                    Shipping= new ShippingView
+                    {
+                        First_name = shipping.First_name,
+                        Last_name = shipping.Last_name,
+                        Address_1 = shipping.Address_1,
+                        Address_2 = shipping.Address_2,
+                        City = shipping.City,
+                        Country = shipping.Country,
+                        Company = shipping.Company,
+                        Email = shipping.Email,
+                        Phone = shipping.Phone,
+                        Postcode = shipping.Postcode,
+                        State = shipping.State,
+                        Id = shipping.Id
+                    }
+                };
+            }
+            else
+            {
+                return null;
+            }
 
+        }
         public PaginatedList<OrderView> Search(OrderSearchFilter filter, PaginationInfoView paginationInfo)
         {
             var query = _repository.Query<Order>();
@@ -122,5 +181,7 @@ namespace Commerce.BusinessImplementation
             return paginatedList;
 
         }
+
+       
     }
 }

@@ -26,6 +26,8 @@ namespace Commerce.BusinessImplementation
             RestAPI rest = new RestAPI("https://www.ne-ararsan.com/wp-json/wc/v2/", "ck_6c2e256b3a1fc9857e78d095dadc6dcd47d7df57", "cs_d83dea91af83a7a92fc014300d9472475ef78fe6");
             WCObject wc = new WCObject(rest);
             var counter = 0;
+            long billingId;
+            long shippingId;
             var orders = wc.Order.GetAll();
             orders.Wait();
             var count = orders.Result.Count;
@@ -34,11 +36,64 @@ namespace Commerce.BusinessImplementation
             if (list.Count == 0)
             {
                 var orderInstance = orders.Result[0];
-                _repository.Save<Commerce.EntityModel.Order>(new Commerce.EntityModel.Order { RefId = Convert.ToInt64(orderInstance.id), CreatedDate = DateTime.Now.ToDateTime(), IsLast = true, Status = Status.Active });
+                 billingId = _repository.Save<Billing>(new Billing
+                {
+                    First_name = orderInstance.billing.first_name,
+                    Last_name = orderInstance.billing.last_name,
+                    Address_1 = orderInstance.billing.address_1,
+                    Address_2 = orderInstance.billing.address_2,
+                    City = orderInstance.billing.city,
+                    Country = orderInstance.billing.country,
+                    Company = orderInstance.billing.company,
+                    Email = orderInstance.billing.email,
+                    Phone = orderInstance.billing.phone,
+                    Postcode = orderInstance.billing.postcode,
+                    State = orderInstance.billing.state
+
+                });
+                 shippingId = _repository.Save<Shipping>(new Shipping {
+                    First_name = orderInstance.shipping.first_name,
+                    Last_name = orderInstance.shipping.last_name,
+                    Address_1 = orderInstance.shipping.address_1,
+                    Address_2 = orderInstance.shipping.address_2,
+                    City = orderInstance.shipping.city,
+                    Country = orderInstance.shipping.country,
+                    Company = orderInstance.shipping.company,  
+                    Postcode = orderInstance.shipping.postcode,
+                    State = orderInstance.shipping.state
+                });
+                _repository.Save<Commerce.EntityModel.Order>(new Commerce.EntityModel.Order { BillingId=billingId,ShippingId=shippingId, RefId = Convert.ToInt64(orderInstance.id), CreatedDate = DateTime.Now.ToDateTime(), IsLast = true, Status = Status.Active });
                 for (int i = 1; i < count; i++)
                 {
-                    orderInstance = orders.Result[i];                  
-                    _repository.Save<Commerce.EntityModel.Order>(new Commerce.EntityModel.Order { RefId = Convert.ToInt64(orderInstance.id), CreatedDate = DateTime.Now.ToDateTime(), IsLast = false, Status = Status.Active });
+                    orderInstance = orders.Result[i];
+                    billingId = _repository.Save<Billing>(new Billing
+                    {
+                        First_name = orderInstance.billing.first_name,
+                        Last_name = orderInstance.billing.last_name,
+                        Address_1 = orderInstance.billing.address_1,
+                        Address_2 = orderInstance.billing.address_2,
+                        City = orderInstance.billing.city,
+                        Country = orderInstance.billing.country,
+                        Company = orderInstance.billing.company,
+                        Email = orderInstance.billing.email,
+                        Phone = orderInstance.billing.phone,
+                        Postcode = orderInstance.billing.postcode,
+                        State = orderInstance.billing.state
+
+                    });
+                    shippingId = _repository.Save<Shipping>(new Shipping
+                    {
+                        First_name = orderInstance.shipping.first_name,
+                        Last_name = orderInstance.shipping.last_name,
+                        Address_1 = orderInstance.shipping.address_1,
+                        Address_2 = orderInstance.shipping.address_2,
+                        City = orderInstance.shipping.city,
+                        Country = orderInstance.shipping.country,
+                        Company = orderInstance.shipping.company,
+                        Postcode = orderInstance.shipping.postcode,
+                        State = orderInstance.shipping.state
+                    });
+                    _repository.Save<Commerce.EntityModel.Order>(new Commerce.EntityModel.Order { BillingId = billingId, ShippingId = shippingId, RefId = Convert.ToInt64(orderInstance.id), CreatedDate = DateTime.Now.ToDateTime(), IsLast = false, Status = Status.Active });
                 }
                 counter = count;
             }
@@ -71,12 +126,65 @@ namespace Commerce.BusinessImplementation
                     {
                         counter = counter + 1;
                         orderInstance = orders.Result[i];
+                        billingId = _repository.Save<Billing>(new Billing
+                        {
+                            First_name = orderInstance.billing.first_name,
+                            Last_name = orderInstance.billing.last_name,
+                            Address_1 = orderInstance.billing.address_1,
+                            Address_2 = orderInstance.billing.address_2,
+                            City = orderInstance.billing.city,
+                            Country = orderInstance.billing.country,
+                            Company = orderInstance.billing.company,
+                            Email = orderInstance.billing.email,
+                            Phone = orderInstance.billing.phone,
+                            Postcode = orderInstance.billing.postcode,
+                            State = orderInstance.billing.state
 
-                        _repository.Save<Commerce.EntityModel.Order>(new Commerce.EntityModel.Order { RefId = Convert.ToInt64(orderInstance.id), CreatedDate = DateTime.Now.ToDateTime(), IsLast = false ,Status=Status.Active});
+                        });
+                        shippingId = _repository.Save<Shipping>(new Shipping
+                        {
+                            First_name = orderInstance.shipping.first_name,
+                            Last_name = orderInstance.shipping.last_name,
+                            Address_1 = orderInstance.shipping.address_1,
+                            Address_2 = orderInstance.shipping.address_2,
+                            City = orderInstance.shipping.city,
+                            Country = orderInstance.shipping.country,
+                            Company = orderInstance.shipping.company,
+                            Postcode = orderInstance.shipping.postcode,
+                            State = orderInstance.shipping.state
+                        });
+                        _repository.Save<Commerce.EntityModel.Order>(new Commerce.EntityModel.Order { BillingId = billingId, ShippingId = shippingId, RefId = Convert.ToInt64(orderInstance.id), CreatedDate = DateTime.Now.ToDateTime(), IsLast = false ,Status=Status.Active});
                     }
-                    orderInstance = orders.Result[0];
                     counter = counter + 1;
-                    _repository.Save<Commerce.EntityModel.Order>(new Commerce.EntityModel.Order { RefId = Convert.ToInt64(orderInstance.id), CreatedDate = DateTime.Now.ToDateTime(), IsLast = true, Status = Status.Active });
+                    orderInstance = orders.Result[0];
+                    billingId = _repository.Save<Billing>(new Billing
+                    {
+                        First_name = orderInstance.billing.first_name,
+                        Last_name = orderInstance.billing.last_name,
+                        Address_1 = orderInstance.billing.address_1,
+                        Address_2 = orderInstance.billing.address_2,
+                        City = orderInstance.billing.city,
+                        Country = orderInstance.billing.country,
+                        Company = orderInstance.billing.company,
+                        Email = orderInstance.billing.email,
+                        Phone = orderInstance.billing.phone,
+                        Postcode = orderInstance.billing.postcode,
+                        State = orderInstance.billing.state
+
+                    });
+                    shippingId = _repository.Save<Shipping>(new Shipping
+                    {
+                        First_name = orderInstance.shipping.first_name,
+                        Last_name = orderInstance.shipping.last_name,
+                        Address_1 = orderInstance.shipping.address_1,
+                        Address_2 = orderInstance.shipping.address_2,
+                        City = orderInstance.shipping.city,
+                        Country = orderInstance.shipping.country,
+                        Company = orderInstance.shipping.company,
+                        Postcode = orderInstance.shipping.postcode,
+                        State = orderInstance.shipping.state
+                    });
+                    _repository.Save<Commerce.EntityModel.Order>(new Commerce.EntityModel.Order { BillingId = billingId, ShippingId = shippingId, RefId = Convert.ToInt64(orderInstance.id), CreatedDate = DateTime.Now.ToDateTime(), IsLast = true, Status = Status.Active });
 
                     lastOrder.IsLast = false;
                     _repository.Save<Commerce.EntityModel.Order>(lastOrder);

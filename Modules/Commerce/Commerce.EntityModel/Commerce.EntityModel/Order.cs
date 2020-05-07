@@ -8,6 +8,8 @@ namespace Commerce.EntityModel
         public virtual long Id {get ; set;}
         public virtual bool IsLast { get; set; }
         public virtual long RefId { get; set; }
+        public virtual long BillingId { get; set; }
+        public virtual long ShippingId { get; set; }
         public virtual long CompanyId { get; set; }
         public virtual long CustomerId { get; set; }
         public virtual string CustomerIpAddress { get; set; }

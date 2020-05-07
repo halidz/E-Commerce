@@ -8,7 +8,6 @@ namespace Commerce.EntityModel
     public class Product:IEntity
     {
         public virtual long Id { get; set; }
-
         public virtual long CategoryId { get; set; }
         public virtual int? RefId { get; set; }
         public virtual string Name { get; set; }
