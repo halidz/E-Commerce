@@ -23,7 +23,7 @@ namespace Commerce.BusinessImplementation
 
         public long Create(ProductView product)
         {
-            return _repository.Save(new Commerce.EntityModel.Product
+            return _repository.Save(new EntityModel.Product
             {
                 Id = product.Id,
            

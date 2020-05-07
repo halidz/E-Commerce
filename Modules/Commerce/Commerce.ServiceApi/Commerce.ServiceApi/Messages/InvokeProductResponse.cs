@@ -7,5 +7,6 @@ namespace Commerce.ServiceApi.Messages
 {
     public class InvokeProductResponse
     {
+        public int Count { get; set; }
     }
 }

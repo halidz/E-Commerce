@@ -50,7 +50,7 @@ namespace Commerce.ServiceApi.Controllers
         {
 
             var response = new InvokeProductResponse();
-            _connector.QueryProduct();
+            response.Count=_connector.QueryProduct();
             return response;
 
         }

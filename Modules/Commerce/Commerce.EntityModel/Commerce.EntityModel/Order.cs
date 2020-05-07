@@ -16,11 +16,11 @@ namespace Commerce.EntityModel
         public virtual string CustomerNote { get; set; }
         public virtual long ProductId { get; set; }
         public virtual string PaymentMethod { get; set; }
-        public virtual bool SetPaid { get; set; }
+        public virtual bool? SetPaid { get; set; }
         public virtual string Currency { get; set; }
-        public virtual decimal Total { get; set; }
-        public virtual decimal Discount { get; set; }
-        public virtual decimal ShippingTotal { get; set; }
+        public virtual decimal? Total { get; set; }
+        public virtual decimal? Discount { get; set; }
+        public virtual decimal? ShippingTotal { get; set; }
         public virtual Status Status { get; set; }
         public virtual OrderStatus OrderStatus { get; set; }
         public virtual long Date { get; set; }

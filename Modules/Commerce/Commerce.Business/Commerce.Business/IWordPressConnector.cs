@@ -9,7 +9,7 @@ namespace Commerce.Business
     public interface IWordPressConnector
     {
         int QueryOrder();
-        void QueryProduct();
+        int QueryProduct();
         PaginatedList<ProductView> ListProduct();
     }
 }

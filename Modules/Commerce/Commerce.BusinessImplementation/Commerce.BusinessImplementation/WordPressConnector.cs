@@ -9,6 +9,7 @@ using Commerce.EntityModel;
 using System.Linq;
 using Commerce.ViewModel;
 using Commerce.Core.ViewModel;
+using Commerce.Commerce.Core;
 
 namespace Commerce.BusinessImplementation
 {
@@ -31,8 +32,9 @@ namespace Commerce.BusinessImplementation
             var orders = wc.Order.GetAll();
             orders.Wait();
             var count = orders.Result.Count;
-            var query = _repository.Query<Commerce.EntityModel.Order>();
-            var list = query.ToList();
+            var query = _repository.Query<EntityModel.Order>();
+            var list = query.ToList();     //Tolist yerine query result count kullanılabilir.
+            StatusMapper statusMapper = new StatusMapper();
             if (list.Count == 0)
             {
                 var orderInstance = orders.Result[0];
@@ -62,7 +64,23 @@ namespace Commerce.BusinessImplementation
                     Postcode = orderInstance.shipping.postcode,
                     State = orderInstance.shipping.state
                 });
-                _repository.Save<Commerce.EntityModel.Order>(new Commerce.EntityModel.Order { BillingId=billingId,ShippingId=shippingId, RefId = Convert.ToInt64(orderInstance.id), CreatedDate = DateTime.Now.ToDateTime(), IsLast = true, Status = Status.Active });
+                _repository.Save<EntityModel.Order>(new EntityModel.Order {
+                    BillingId =billingId,ShippingId=shippingId,
+                    RefId = Convert.ToInt64(orderInstance.id),
+                    CreatedDate = DateTime.Now.ToDateTime(),
+                    IsLast = true,
+                    Status = Status.Active,
+                    Total= orderInstance.total,
+                    Currency=orderInstance.currency,
+                    CustomerIpAddress=orderInstance.customer_ip_address,
+                    Discount=orderInstance.discount_total,
+                    SetPaid=orderInstance.set_paid,
+                    ShippingTotal=orderInstance.shipping_total,
+                    PaymentMethod=orderInstance.payment_method,
+                    OrderStatus=statusMapper.Map(orderInstance.status)
+
+
+                });
                 for (int i = 1; i < count; i++)
                 {
                     orderInstance = orders.Result[i];
@@ -93,7 +111,22 @@ namespace Commerce.BusinessImplementation
                         Postcode = orderInstance.shipping.postcode,
                         State = orderInstance.shipping.state
                     });
-                    _repository.Save<Commerce.EntityModel.Order>(new Commerce.EntityModel.Order { BillingId = billingId, ShippingId = shippingId, RefId = Convert.ToInt64(orderInstance.id), CreatedDate = DateTime.Now.ToDateTime(), IsLast = false, Status = Status.Active });
+                    _repository.Save<EntityModel.Order>(new EntityModel.Order {
+                        BillingId = billingId,
+                        ShippingId = shippingId,
+                        RefId = Convert.ToInt64(orderInstance.id),
+                        CreatedDate = DateTime.Now.ToDateTime(),
+                        IsLast = false,
+                        Status = Status.Active,
+                        Total = orderInstance.total,
+                        Currency = orderInstance.currency,
+                        CustomerIpAddress = orderInstance.customer_ip_address,
+                        Discount = orderInstance.discount_total,
+                        SetPaid = orderInstance.set_paid,
+                        ShippingTotal = orderInstance.shipping_total,
+                        PaymentMethod = orderInstance.payment_method,
+                        OrderStatus = statusMapper.Map(orderInstance.status)
+                    });
                 }
                 counter = count;
             }
@@ -103,9 +136,7 @@ namespace Commerce.BusinessImplementation
                 var lastOrders = list.Where(x => x.CreatedDate == lastDate);
                 var lastOrder = lastOrders.Where(x => x.IsLast == true).FirstOrDefault();
 
-
                 var idOfLastOrder = orders.Result[0].id;
-
                 //int vs long
                 if (idOfLastOrder == lastOrder.RefId)
                 {
@@ -153,7 +184,22 @@ namespace Commerce.BusinessImplementation
                             Postcode = orderInstance.shipping.postcode,
                             State = orderInstance.shipping.state
                         });
-                        _repository.Save<Commerce.EntityModel.Order>(new Commerce.EntityModel.Order { BillingId = billingId, ShippingId = shippingId, RefId = Convert.ToInt64(orderInstance.id), CreatedDate = DateTime.Now.ToDateTime(), IsLast = false ,Status=Status.Active});
+                        _repository.Save<EntityModel.Order>(new EntityModel.Order {
+                            BillingId = billingId,
+                            ShippingId = shippingId,
+                            RefId = Convert.ToInt64(orderInstance.id),
+                            CreatedDate = DateTime.Now.ToDateTime(),
+                            IsLast = false ,
+                            Status =Status.Active,
+                            Total = orderInstance.total,
+                            Currency = orderInstance.currency,
+                            CustomerIpAddress = orderInstance.customer_ip_address,
+                            Discount = orderInstance.discount_total,
+                            SetPaid = orderInstance.set_paid,
+                            ShippingTotal = orderInstance.shipping_total,
+                            PaymentMethod = orderInstance.payment_method,
+                            OrderStatus = statusMapper.Map(orderInstance.status)
+                        });
                     }
                     counter = counter + 1;
                     orderInstance = orders.Result[0];
@@ -184,10 +230,25 @@ namespace Commerce.BusinessImplementation
                         Postcode = orderInstance.shipping.postcode,
                         State = orderInstance.shipping.state
                     });
-                    _repository.Save<Commerce.EntityModel.Order>(new Commerce.EntityModel.Order { BillingId = billingId, ShippingId = shippingId, RefId = Convert.ToInt64(orderInstance.id), CreatedDate = DateTime.Now.ToDateTime(), IsLast = true, Status = Status.Active });
+                    _repository.Save<EntityModel.Order>(new EntityModel.Order {
+                        BillingId = billingId,
+                        ShippingId = shippingId,
+                        RefId = Convert.ToInt64(orderInstance.id),
+                        CreatedDate = DateTime.Now.ToDateTime(),
+                        IsLast = true,
+                        Status = Status.Active,
+                        Total = orderInstance.total,
+                        Currency = orderInstance.currency,
+                        CustomerIpAddress = orderInstance.customer_ip_address,
+                        Discount = orderInstance.discount_total,
+                        SetPaid = orderInstance.set_paid,
+                        ShippingTotal = orderInstance.shipping_total,
+                        PaymentMethod = orderInstance.payment_method,
+                        OrderStatus = statusMapper.Map(orderInstance.status)
+                    });
 
                     lastOrder.IsLast = false;
-                    _repository.Save<Commerce.EntityModel.Order>(lastOrder);
+                    _repository.Save<EntityModel.Order>(lastOrder);
 
                     //orderInstance =cu
                 }
@@ -219,13 +280,14 @@ namespace Commerce.BusinessImplementation
             },newQuery);
             return list;
         }
-        public void QueryProduct()
+        public int QueryProduct()
         {
             RestAPI rest = new RestAPI("https://www.ne-ararsan.com/wp-json/wc/v2/", "ck_6c2e256b3a1fc9857e78d095dadc6dcd47d7df57", "cs_d83dea91af83a7a92fc014300d9472475ef78fe6");
             WCObject wc = new WCObject(rest);
           
             var products = wc.Product.GetAll();
             products.Wait();
+            var counter = 0;
             var count = products.Result.Count;
             var query = _repository.Query<EntityModel.Product>();
             var list = query.ToList();
@@ -261,6 +323,8 @@ namespace Commerce.BusinessImplementation
 
                     });
                 }
+                counter = count;
+                return counter;
             }
             else
             {
@@ -268,13 +332,12 @@ namespace Commerce.BusinessImplementation
                 var lastOrders = list.Where(x => x.CreatedDate == lastDate);
                 var lastOrder = lastOrders.Where(x => x.IsLast == true).FirstOrDefault();
 
-
                 var idOfLastOrder = products.Result[0].id;
 
                 //int vs long
                 if (idOfLastOrder == lastOrder.RefId)
                 {
-
+                    return 0;
 
                 }
                 else
@@ -291,8 +354,8 @@ namespace Commerce.BusinessImplementation
                     for (int i = index - 1; i >= 1; i--)
                     {
                         productInstance = products.Result[i];
-
-                        _repository.Save<Commerce.EntityModel.Product>(new Commerce.EntityModel.Product
+                        counter = counter + 1;
+                        _repository.Save<EntityModel.Product>(new EntityModel.Product
                         {
 
                             Name = productInstance.name,
@@ -306,8 +369,8 @@ namespace Commerce.BusinessImplementation
                         });
                     }
                     productInstance = products.Result[0];
-
-                    _repository.Save<Commerce.EntityModel.Product>(new Commerce.EntityModel.Product
+                    counter = counter + 1;
+                    _repository.Save<EntityModel.Product>(new EntityModel.Product
                     {
 
                         Name = productInstance.name,
@@ -321,8 +384,8 @@ namespace Commerce.BusinessImplementation
                     });
 
                     lastOrder.IsLast = false;
-                    _repository.Save<Commerce.EntityModel.Product>(lastOrder);
-
+                    _repository.Save<EntityModel.Product>(lastOrder);
+                    return counter;
                 }
             }
 
